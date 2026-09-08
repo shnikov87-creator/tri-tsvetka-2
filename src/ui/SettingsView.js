@@ -42,6 +42,12 @@ export class SettingsView {
       document.querySelectorAll('#setTheme button').forEach((x) => x.classList.toggle('on', x === b));
       this._applyTheme();
     }));
+    // Сезон (тест) — временная мера для проверки цветов
+    document.querySelectorAll('#setSeason button').forEach((b) => b.addEventListener('click', () => {
+      this.app.store.set('season', b.dataset.v);
+      document.querySelectorAll('#setSeason button').forEach((x) => x.classList.toggle('on', x === b));
+      this._applySeason();
+    }));
     document.getElementById('setMotion').addEventListener('click', (e) => this._toggleMotion(e.target));
     document.getElementById('setReset').addEventListener('click', () => this._handleReset());
   }
@@ -65,6 +71,7 @@ export class SettingsView {
     document.querySelectorAll('#setFx button').forEach((b) => b.classList.toggle('on', parseFloat(b.dataset.v) === this.app.store.get('fx')));
     document.querySelectorAll('#setSize button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.app.store.get('boardSize')));
     document.querySelectorAll('#setTheme button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.app.store.get('theme')));
+    document.querySelectorAll('#setSeason button').forEach((b) => b.classList.toggle('on', b.dataset.v === this.app.store.get('season')));
     const mo = document.getElementById('setMotion');
     const motion = this.app.store.get('motion');
     mo.classList.toggle('on', motion);
@@ -125,6 +132,18 @@ export class SettingsView {
     document.body.classList.toggle('theme-dark', theme === 'dark');
     const names = { light: 'Светлая тема', dark: 'Тёмная тема' };
     this.app.banner(names[theme]);
+  }
+
+  // Сезон (тест) — меняет сезон вручную для проверки цветов.
+  _applySeason() {
+    const season = this.app.store.get('season');
+    this.app.hud.applySeasonUI();
+    if (this.app.game.board && this.app.game.board.grid.length) {
+      this.app.game.setSeason(season);
+    }
+    this.app.weather.switchSeason();
+    const names = { summer: 'Лето', spring: 'Весна', autumn: 'Осень', winter: 'Зима' };
+    this.app.banner('Сезон: ' + names[season] + ' (тест)');
   }
 
   _handleReset() {

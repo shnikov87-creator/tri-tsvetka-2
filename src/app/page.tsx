@@ -240,6 +240,14 @@ export default function Home() {
             </div>
           </div>
           <div className="set-row"><span>Меньше движения</span><button className="tgl" id="setMotion">выкл</button></div>
+          <div className="set-row"><span>Сезон (тест)</span>
+            <div className="seg" id="setSeason">
+              <button data-v="summer">Лето</button>
+              <button data-v="spring">Весна</button>
+              <button data-v="autumn">Осень</button>
+              <button data-v="winter">Зима</button>
+            </div>
+          </div>
           <div className="set-row"><span>Тема</span>
             <div className="seg" id="setTheme">
               <button data-v="light">Светлая</button>
